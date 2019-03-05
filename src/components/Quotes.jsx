@@ -8,18 +8,19 @@ import { deleteQuote, makeQuoteOfTheDay } from '../App';
 
 export class Quotes extends React.Component {
   render() {
-    const quotes = this.props.quotes || [];
-
     return (
       <div>
         <h3>My Favorite Quotes</h3>
         <div>
           {
             // is <Quote /> getting everything it needs?
-            quotes.map(quote => (
+            this.props.quotes.map(quote => (
               <Quote
                 key={quote.id}
                 quote={quote}
+                makeQuoteOfTheDay={this.props.makeQuoteOfTheDay}
+                deleteQuote={this.props.deleteQuote}
+                isQuoteOfTheDay={quote.id === this.props.quoteOfTheDay}
               />
             ))
           }
@@ -42,18 +43,20 @@ Quotes.propTypes = {
   deleteQuote: func,
 };
 
+// Keys returned from this FN will be used as props from Redux state
 function mapStateToProps(state) {
   return {
-    // there are 2 keys missing here!
-    // look at the propTypes for hints
+    quotes: state.quotes,
+    quoteOfTheDay: state.quoteOfTheDay,
   };
 }
 
+// you dispatch action creators to component
+// this can be done in the connect HOC 2nd arg { deleteQuote, makeQouteOfTheDay }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    // there are 2 keys missing here!
-    // look at the propTypes for hints
-    // (or imports at the top)
+    deleteQuote,
+    makeQuoteOfTheDay,
   }, dispatch);
 }
 

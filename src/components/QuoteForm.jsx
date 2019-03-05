@@ -11,8 +11,12 @@ export class QuoteForm extends React.Component {
   textRef = React.createRef()
 
   onAddQuote = () => {
-    // 3- implement so it uses this.props.addQuote
-    // and also clears the inputs
+    const authorValue = this.authorRef.current.value;
+    const textValue = this.textRef.current.value;
+
+    this.props.addQuote(authorValue, textValue);
+    this.authorRef.current.value = '';
+    this.textRef.current.value = '';
   }
 
   render() {
@@ -44,12 +48,14 @@ function mapStateToProps(state) {
   return {
     // 1- fix so component gets a numberOfQuotes
     // that maps to state.quotes.length
+    numberOfQuotes: state.quotes.length,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     // 2- fix
+    addQuote,
   }, dispatch);
 }
 
